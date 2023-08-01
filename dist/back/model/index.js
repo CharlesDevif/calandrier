@@ -1,17 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.delUser = exports.updUser = exports.addUser = exports.getById = exports.getAll = void 0;
+exports.delEvent = exports.updEvent = exports.addEvent = exports.getById = exports.getAll = void 0;
 // get the client
 const { createConnection, RowDataPacket } = require('mysql2');
 // create the connection to database 
 const connection = createConnection({
     host: 'localhost',
     user: 'root',
-    database: 'user'
+    database: 'calendrier'
 });
 function getAll() {
     return new Promise((resolve, rej) => {
-        connection.query('SELECT * FROM user', (err, res) => {
+        connection.query('SELECT * FROM event', (err, res) => {
             if (err)
                 rej(err);
             else
@@ -22,7 +22,7 @@ function getAll() {
 exports.getAll = getAll;
 function getById(id) {
     return new Promise((resolve, rej) => {
-        connection.query('SELECT * FROM user WHERE id=?', [id], (err, res) => {
+        connection.query('SELECT * FROM event WHERE id=?', [id], (err, res) => {
             if (err)
                 rej(err);
             else
@@ -31,9 +31,9 @@ function getById(id) {
     });
 }
 exports.getById = getById;
-function addUser(user) {
+function addEvent(event) {
     return new Promise((resolve, rej) => {
-        connection.query('INSERT INTO user (prenom,nom) VALUES (?,?)', [user.prenom, user.nom], (err) => {
+        connection.query('INSERT INTO event (date_deb,date_fin) VALUES (?,?)', [event.date_deb, event.date_fin], (err) => {
             if (err)
                 rej(err);
             else
@@ -41,10 +41,10 @@ function addUser(user) {
         });
     });
 }
-exports.addUser = addUser;
-function updUser(user) {
+exports.addEvent = addEvent;
+function updEvent(event) {
     return new Promise((resolve, rej) => {
-        connection.query('UPDATE user SET prenom=?,nom=? WHERE id=?', [user.prenom, user.nom, user.id], (err) => {
+        connection.query('UPDATE event SET prenom=?,nom=? WHERE id=?', [event.date_deb, event.date_fin, event.id], (err) => {
             if (err)
                 rej(err);
             else
@@ -52,10 +52,10 @@ function updUser(user) {
         });
     });
 }
-exports.updUser = updUser;
-function delUser(id) {
+exports.updEvent = updEvent;
+function delEvent(id) {
     return new Promise((resolve, rej) => {
-        connection.query('DELETE FROM user WHERE id=?', [id], (err) => {
+        connection.query('DELETE FROM event WHERE id=?', [id], (err) => {
             if (err)
                 rej(err);
             else
@@ -63,4 +63,4 @@ function delUser(id) {
         });
     });
 }
-exports.delUser = delUser;
+exports.delEvent = delEvent;

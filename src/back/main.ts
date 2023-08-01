@@ -1,10 +1,10 @@
 // Modules to control application life and create native browser window
-import { app, BrowserWindow, Menu } from 'electron'
+import { app, BrowserWindow, Menu, ipcMain  } from 'electron'
 import { join } from 'node:path'
 
-import handleEvt from './events/modelEvt'
+// import handleEvt from './events/modelEvt'
 
-handleEvt()
+// handleEvt()
 
 
 
@@ -66,6 +66,29 @@ function createWindow() {
   //   console.log('fenetre deplacé');
 
   // })
+
+ipcMain.handle('open-new-window', (event, number) => {
+  console.log("test open win");
+  
+  openNewElectronWindow(number);
+});
+}
+
+
+
+function openNewElectronWindow(number :Number) {
+  const newWindow = new BrowserWindow({
+      width: 400,
+      height: 300,
+      title: `Nouvelle fenêtre - ${number}`,
+      webPreferences: {
+          nodeIntegration: true,
+          contextIsolation: false
+      }
+  });
+  newWindow.webContents.send('init', number)
+  newWindow.webContents.openDevTools()
+  newWindow.loadFile('./pages/add-event.html');
 }
 
 // This method will be called when Electron has finished

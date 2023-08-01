@@ -1,37 +1,37 @@
 // get the client
 const { createConnection, RowDataPacket } = require('mysql2');
-import { IUser } from '../../interfaces/user';
+import { IEvent } from '../../interfaces/event';
 
 // create the connection to database 
 const connection = createConnection({
     host: 'localhost',
     user: 'root',
-    database: 'user'
+    database: 'calendrier'
 });
 
-export function getAll(): Promise<IUser[]> {
+export function getAll(): Promise<IEvent[]> {
     return new Promise((resolve, rej) => {
-        connection.query('SELECT * FROM user',
+        connection.query('SELECT * FROM event',
             (err: Error, res: typeof RowDataPacket[]) => {
                 if (err) rej(err)
-                else resolve(res as IUser[])
+                else resolve(res as IEvent[])
             })
     })
 }
 export function getById(id: number) {
     return new Promise((resolve, rej) => {
-        connection.query('SELECT * FROM user WHERE id=?',
+        connection.query('SELECT * FROM event WHERE id=?',
             [id],
             (err: Error, res: typeof RowDataPacket[]) => {
                 if (err) rej(err)
-                else resolve(res[0] as IUser)
+                else resolve(res[0] as IEvent)
             })
     })
 }
-export function addUser(user: IUser) {
+export function addEvent(event: IEvent) {
     return new Promise((resolve, rej) => {
-        connection.query('INSERT INTO user (prenom,nom) VALUES (?,?)',
-            [user.prenom, user.nom],
+        connection.query('INSERT INTO event (date_deb,date_fin) VALUES (?,?)',
+            [event.date_deb, event.date_fin],
             (err: Error) => {
                 if (err) rej(err)
                 else resolve("Utilisateur ajouté")
@@ -39,19 +39,19 @@ export function addUser(user: IUser) {
     })
 }
 
-export function updUser(user: IUser) {
+export function updEvent(event: IEvent) {
     return new Promise((resolve, rej) => {
-        connection.query('UPDATE user SET prenom=?,nom=? WHERE id=?',
-            [user.prenom, user.nom, user.id],
+        connection.query('UPDATE event SET prenom=?,nom=? WHERE id=?',
+            [event.date_deb, event.date_fin, event.id],
             (err: Error) => {
                 if (err) rej(err)
                 else resolve("Utilisateur modifié")
             })
     })
 }
-export function delUser(id: number) {
+export function delEvent(id: number) {
     return new Promise((resolve, rej) => {
-        connection.query('DELETE FROM user WHERE id=?',
+        connection.query('DELETE FROM event WHERE id=?',
             [id],
             (err: Error) => {
                 if (err) rej(err)

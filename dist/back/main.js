@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // Modules to control application life and create native browser window
 const electron_1 = require("electron");
 const node_path_1 = require("node:path");
-const modelEvt_1 = require("./events/modelEvt");
-(0, modelEvt_1.default)();
+// import handleEvt from './events/modelEvt'
+// handleEvt()
 const menuTpl = [
     {
         label: "Menu",
@@ -53,6 +53,24 @@ function createWindow() {
     // mainWindow.on("move", () => {
     //   console.log('fenetre deplacé');
     // })
+    electron_1.ipcMain.handle('open-new-window', (event, number) => {
+        console.log("test open win");
+        openNewElectronWindow(number);
+    });
+}
+function openNewElectronWindow(number) {
+    const newWindow = new electron_1.BrowserWindow({
+        width: 400,
+        height: 300,
+        title: `Nouvelle fenêtre - ${number}`,
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false
+        }
+    });
+    newWindow.webContents.send('init', number);
+    newWindow.webContents.openDevTools();
+    newWindow.loadFile('./pages/add-event.html');
 }
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

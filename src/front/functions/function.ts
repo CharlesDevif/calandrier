@@ -1,6 +1,7 @@
 const currentDate: Date = new Date();
 let currentMonth: number = currentDate.getMonth();
 let currentYear: number = currentDate.getFullYear();
+
 displayCalendar(currentMonth, currentYear);
 
 function displayCalendar(month: number, year: number): void {
@@ -51,8 +52,11 @@ function displayCalendar(month: number, year: number): void {
         }
 
         calendarContainer.appendChild(calendarTable);
+
     }
 }
+
+
 
 function previousMonth(): void {
     currentMonth--;
@@ -76,3 +80,7 @@ function monthName(month: number): string {
     const monthNames: string[] = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
     return monthNames[month];
 }
+
+
+
+
